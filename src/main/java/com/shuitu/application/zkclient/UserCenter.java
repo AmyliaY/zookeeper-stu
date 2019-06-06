@@ -30,9 +30,6 @@ public class UserCenter implements Serializable{
 
     @Override
     public String toString() {
-        return "UserCenter{" +
-                "mc_id=" + mc_id +
-                ", mc_name='" + mc_name + '\'' +
-                '}';
+        return "UserCenter{" + "mc_id=" + mc_id + ", mc_name='" + mc_name + '\'' + '}';
     }
 }

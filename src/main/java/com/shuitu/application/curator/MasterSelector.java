@@ -13,16 +13,16 @@ import java.util.concurrent.TimeUnit;
  */
 public class MasterSelector {
 
-    private final static String CONNECTSTRING="192.168.11.129:2181,192.168.11.134:2181," +
-            "192.168.11.135:2181,192.168.11.136:2181";
+	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +
+            "192.168.123.45:2181,192.168.123.174:2181";
 
-    private final static String MASTER_PATH="/curator_master_path";
+    private final static String MASTER_PATH = "/curator_master_path";
     public static void main(String[] args) {
 
-        CuratorFramework curatorFramework= CuratorFrameworkFactory.builder().connectString(CONNECTSTRING).
-                retryPolicy(new ExponentialBackoffRetry(1000,3)).build();
+        CuratorFramework curatorFramework = CuratorFrameworkFactory.builder().connectString(CONNECTSTRING).
+                retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 
-        LeaderSelector leaderSelector=new LeaderSelector(curatorFramework, MASTER_PATH, new LeaderSelectorListenerAdapter() {
+        LeaderSelector leaderSelector = new LeaderSelector(curatorFramework, MASTER_PATH, new LeaderSelectorListenerAdapter() {
             @Override
             public void takeLeadership(CuratorFramework client) throws Exception {
                 System.out.println("获得leader成功");

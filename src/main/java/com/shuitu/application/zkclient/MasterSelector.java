@@ -16,7 +16,7 @@ public class MasterSelector {
 
     private ZkClient zkClient;
 
-    private final static String MASTER_PATH="/master"; //需要争抢的节点
+    private final static String MASTER_PATH = "/master"; //需要争抢的节点
 
     private IZkDataListener dataListener; //注册节点内容变化
 
@@ -24,16 +24,16 @@ public class MasterSelector {
 
     private UserCenter master;  //master节点
 
-    private boolean isRunning=false;
+    private boolean isRunning = false;
 
-    ScheduledExecutorService scheduledExecutorService= Executors.newScheduledThreadPool(1);
+    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-    public MasterSelector(UserCenter server,ZkClient zkClient) {
-        System.out.println("["+server+"] 去争抢master权限");
+    public MasterSelector(UserCenter server, ZkClient zkClient) {
+        System.out.println("[" + server + "] 去争抢master权限");
         this.server = server;
-        this.zkClient=zkClient;
+        this.zkClient = zkClient;
 
-        this.dataListener= new IZkDataListener() {
+        this.dataListener = new IZkDataListener() {
             @Override
             public void handleDataChange(String s, Object o) throws Exception {
 
@@ -50,8 +50,8 @@ public class MasterSelector {
     public void start(){
         //开始选举
         if(!isRunning){
-            isRunning=true;
-            zkClient.subscribeDataChanges(MASTER_PATH,dataListener); //注册节点事件
+            isRunning = true;
+            zkClient.subscribeDataChanges(MASTER_PATH, dataListener); //注册节点事件
             chooseMaster();
         }
     }
@@ -60,9 +60,9 @@ public class MasterSelector {
     public void stop(){
         //停止
         if(isRunning){
-            isRunning=false;
+            isRunning = false;
             scheduledExecutorService.shutdown();
-            zkClient.unsubscribeDataChanges(MASTER_PATH,dataListener);
+            zkClient.unsubscribeDataChanges(MASTER_PATH, dataListener);
             releaseMaster();
         }
     }
@@ -77,21 +77,21 @@ public class MasterSelector {
         try {
             zkClient.createEphemeral(MASTER_PATH, server);
             master=server; //把server节点赋值给master
-            System.out.println(master+"->我现在已经是master，你们要听我的");
+            System.out.println(master + "->我现在已经是master，你们要听我的");
 
             //定时器
             //master释放(master 出现故障）,没5秒钟释放一次
             scheduledExecutorService.schedule(()->{
                 releaseMaster();//释放锁
-            },2, TimeUnit.SECONDS);
+            }, 2, TimeUnit.SECONDS);
         }catch (ZkNodeExistsException e){
             //表示master已经存在
-            UserCenter userCenter=zkClient.readData(MASTER_PATH,true);
-            if(userCenter==null) {
+            UserCenter userCenter = zkClient.readData(MASTER_PATH, true);
+            if(userCenter == null) {
                 System.out.println("启动操作：");
                 chooseMaster(); //再次获取master
             }else{
-                master=userCenter;
+                master = userCenter;
             }
         }
     }
@@ -107,9 +107,9 @@ public class MasterSelector {
 
     private boolean checkIsMaster(){
         //判断当前的server是不是master
-        UserCenter userCenter=zkClient.readData(MASTER_PATH);
+        UserCenter userCenter = zkClient.readData(MASTER_PATH);
         if(userCenter.getMc_name().equals(server.getMc_name())){
-            master=userCenter;
+            master = userCenter;
             return true;
         }
         return false;
