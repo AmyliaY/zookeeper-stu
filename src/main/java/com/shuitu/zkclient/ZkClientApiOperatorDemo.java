@@ -12,11 +12,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class ZkClientApiOperatorDemo {
 
-    private final static String CONNECTSTRING="192.168.11.129:2181,192.168.11.134:2181," +
-            "192.168.11.135:2181,192.168.11.136:2181";
+	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +
+            "192.168.123.45:2181,192.168.123.174:2181";
 
-    private static ZkClient  getInstance(){
-        return new ZkClient(CONNECTSTRING,10000);
+    private static ZkClient getInstance(){
+        return new ZkClient(CONNECTSTRING, 10000);
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -30,7 +30,7 @@ public class ZkClientApiOperatorDemo {
 
 
         //获取子节点
-        List<String> list=zkClient.getChildren("/node");
+        List<String> list = zkClient.getChildren("/node");
         System.out.println(list);
 
         //watcher
@@ -38,7 +38,7 @@ public class ZkClientApiOperatorDemo {
         zkClient.subscribeDataChanges("/node", new IZkDataListener() {
             @Override
             public void handleDataChange(String s, Object o) throws Exception {
-                System.out.println("节点名称："+s+"->节点修改后的值"+o);
+                System.out.println("节点名称：" + s + "->节点修改后的值" + o);
             }
 
             @Override
@@ -47,7 +47,7 @@ public class ZkClientApiOperatorDemo {
             }
         });
 
-        zkClient.writeData("/node","node");
+        zkClient.writeData("/node", "node");
         TimeUnit.SECONDS.sleep(2);
 
         zkClient.subscribeChildChanges("/node", new IZkChildListener() {

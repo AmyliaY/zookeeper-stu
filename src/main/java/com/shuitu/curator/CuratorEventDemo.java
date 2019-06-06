@@ -20,29 +20,29 @@ public class CuratorEventDemo {
      */
 
     public static void main(String[] args) throws Exception {
-        CuratorFramework curatorFramework=CuratorClientUtils.getInstance();
+        CuratorFramework curatorFramework = CuratorClientUtils.getInstance();
 
         /**
          * 节点变化NodeCache
          */
-       /* NodeCache cache=new NodeCache(curatorFramework,"/curator",false);
+       /* NodeCache cache = new NodeCache(curatorFramework, "/curator", false);
         cache.start(true);
 
-        cache.getListenable().addListener(()-> System.out.println("节点数据发生变化,变化后的结果" +
-                "："+new String(cache.getCurrentData().getData())));
+        cache.getListenable().addListener(()-> System.out.println("节点数据发生变化,变化后的结果："
+        	+ new String(cache.getCurrentData().getData())));
 
-        curatorFramework.setData().forPath("/curator","菲菲".getBytes());*/
+        curatorFramework.setData().forPath("/curator", "菲菲".getBytes());*/
 
 
         /**
          * PatchChildrenCache
          */
 
-        PathChildrenCache cache=new PathChildrenCache(curatorFramework,"/event",true);
+        PathChildrenCache cache = new PathChildrenCache(curatorFramework, "/event", true);
         cache.start(PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
         // Normal / BUILD_INITIAL_CACHE /POST_INITIALIZED_EVENT
 
-        cache.getListenable().addListener((curatorFramework1,pathChildrenCacheEvent)->{
+        cache.getListenable().addListener((curatorFramework1, pathChildrenCacheEvent)->{
             switch (pathChildrenCacheEvent.getType()){
                 case CHILD_ADDED:
                     System.out.println("增加子节点");
@@ -57,14 +57,14 @@ public class CuratorEventDemo {
             }
         });
 
-        curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/event","event".getBytes());
+        curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/event", "event".getBytes());
         TimeUnit.SECONDS.sleep(1);
         System.out.println("1");
-        curatorFramework.create().withMode(CreateMode.EPHEMERAL).forPath("/event/event1","1".getBytes());
+        curatorFramework.create().withMode(CreateMode.EPHEMERAL).forPath("/event/event1", "1".getBytes());
         TimeUnit.SECONDS.sleep(1);
         System.out.println("2");
 
-        curatorFramework.setData().forPath("/event/event1","222".getBytes());
+        curatorFramework.setData().forPath("/event/event1", "222".getBytes());
         TimeUnit.SECONDS.sleep(1);
         System.out.println("3");
 

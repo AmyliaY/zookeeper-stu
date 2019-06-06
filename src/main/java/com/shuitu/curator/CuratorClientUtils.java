@@ -10,14 +10,12 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 public class CuratorClientUtils {
 
     private static CuratorFramework curatorFramework;
-    private final static String CONNECTSTRING="192.168.11.129:2181,192.168.11.134:2181," +
-            "192.168.11.135:2181,192.168.11.136:2181";
-
+    private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +
+            "192.168.123.45:2181,192.168.123.174:2181";
 
     public static CuratorFramework getInstance(){
-        curatorFramework= CuratorFrameworkFactory.
-                newClient(CONNECTSTRING,5000,5000,
-                        new ExponentialBackoffRetry(1000,3));
+        curatorFramework = CuratorFrameworkFactory.newClient(CONNECTSTRING, 5000, 5000,
+        	new ExponentialBackoffRetry(1000, 3));
         curatorFramework.start();
         return curatorFramework;
     }
