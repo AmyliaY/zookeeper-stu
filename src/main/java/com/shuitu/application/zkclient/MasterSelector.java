@@ -56,7 +56,6 @@ public class MasterSelector {
         }
     }
 
-
     public void stop(){
         //停止
         if(isRunning){
@@ -66,7 +65,6 @@ public class MasterSelector {
             releaseMaster();
         }
     }
-
 
     //具体选master的实现逻辑
     private void chooseMaster(){
@@ -80,33 +78,32 @@ public class MasterSelector {
             System.out.println(master + "->我现在已经是master，你们要听我的");
 
             //定时器
-            //master释放(master 出现故障）,没5秒钟释放一次
+            //master释放(master 出现故障）,每2秒释放一次
             scheduledExecutorService.schedule(()->{
                 releaseMaster();//释放锁
             }, 2, TimeUnit.SECONDS);
-        }catch (ZkNodeExistsException e){
+        } catch (ZkNodeExistsException e){
             //表示master已经存在
             UserCenter userCenter = zkClient.readData(MASTER_PATH, true);
             if(userCenter == null) {
                 System.out.println("启动操作：");
                 chooseMaster(); //再次获取master
-            }else{
+            } else {
                 master = userCenter;
             }
         }
     }
 
+    //释放锁(故障模拟过程)
     private void releaseMaster(){
-        //释放锁(故障模拟过程)
         //判断当前是不是master，只有master才需要释放
         if(checkIsMaster()){
             zkClient.delete(MASTER_PATH); //删除
         }
     }
 
-
+    //判断当前的server是不是master
     private boolean checkIsMaster(){
-        //判断当前的server是不是master
         UserCenter userCenter = zkClient.readData(MASTER_PATH);
         if(userCenter.getMc_name().equals(server.getMc_name())){
             master = userCenter;
@@ -114,5 +111,4 @@ public class MasterSelector {
         }
         return false;
     }
-
 }

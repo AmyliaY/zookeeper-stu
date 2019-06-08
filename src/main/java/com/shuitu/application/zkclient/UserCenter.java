@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * author：水菟丸
+ * 模拟 争抢master节点的机器
  */
 public class UserCenter implements Serializable{
 

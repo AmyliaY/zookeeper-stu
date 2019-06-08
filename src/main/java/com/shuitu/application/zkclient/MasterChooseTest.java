@@ -10,12 +10,12 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * author：水菟丸
+ * 模拟多个客户端抢夺master权限
  */
 public class MasterChooseTest {
 
 	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +
             "192.168.123.45:2181,192.168.123.174:2181";
-
 
     public static void main(String[] args) throws IOException {
         List<MasterSelector> selectorLists = new ArrayList<>();
@@ -30,7 +30,7 @@ public class MasterChooseTest {
                 MasterSelector selector = new MasterSelector(userCenter, zkClient);
                 selectorLists.add(selector);
                 selector.start();//触发选举操作
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(1);//睡眠1秒
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
