@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * author：水菟丸
- * 模拟多个客户端抢夺master权限
- */
+* @author 全恒
+* 模拟多个客户端抢夺master权限
+*/
 public class MasterChooseTest {
 
 	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +

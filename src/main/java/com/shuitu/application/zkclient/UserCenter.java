@@ -3,9 +3,9 @@ package com.shuitu.application.zkclient;
 import java.io.Serializable;
 
 /**
- * author：水菟丸
- * 模拟 争抢master节点的机器
- */
+* @author 全恒
+* 模拟 争抢master节点的机器
+*/
 public class UserCenter implements Serializable{
 
     private static final long serialVersionUID = -1776114173857775665L;

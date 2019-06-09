@@ -9,8 +9,8 @@ import org.apache.curator.utils.CloseableUtils;
 import java.util.List;
 
 /**
- * author:水菟丸
- */
+* @author 全恒
+*/
 public class TreeCacheDemo {
 	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181,192.168.123.45:2181,192.168.123.174:2181";
     private static final String MASTER_PATH = "/curator_master_path1";

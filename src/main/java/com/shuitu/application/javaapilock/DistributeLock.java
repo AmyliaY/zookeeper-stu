@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
 /**
- * author：水菟丸
- */
+* @author 全恒
+*/
 public class DistributeLock {
 
 

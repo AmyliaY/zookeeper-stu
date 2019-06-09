@@ -6,8 +6,8 @@ import org.apache.zookeeper.Watcher;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * author：水菟丸
- */
+* @author 全恒
+*/
 public class LockWatcher implements Watcher{
 
     private CountDownLatch latch;

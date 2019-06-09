@@ -5,8 +5,8 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
 /**
- * author:水菟丸
- */
+* @author 全恒
+*/
 public class CuratorClientUtils {
 
     private static CuratorFramework curatorFramework;

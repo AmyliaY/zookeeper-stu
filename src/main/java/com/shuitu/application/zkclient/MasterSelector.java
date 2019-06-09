@@ -10,8 +10,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * author：水菟丸
- */
+* @author 全恒
+*/
 public class MasterSelector {
 
     private ZkClient zkClient;

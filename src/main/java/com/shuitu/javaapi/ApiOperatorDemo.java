@@ -15,8 +15,8 @@ import org.apache.zookeeper.data.Id;
 import org.apache.zookeeper.data.Stat;
 
 /**
- * author:水菟丸
- */
+* @author 全恒
+*/
 public class ApiOperatorDemo implements Watcher{
 	
 	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +

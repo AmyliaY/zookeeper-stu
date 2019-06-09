@@ -13,14 +13,15 @@ import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Id;
-import org.apache.zookeeper.data.Stat;
 
 /**
- * author:水菟丸
- */
+* @author 全恒
+*/
 public class AuthControlDemo implements Watcher{
+	
 	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +
             "192.168.123.45:2181,192.168.123.174:2181";
+	
     private static CountDownLatch countDownLatch = new CountDownLatch(1);
 
     private static ZooKeeper zookeeper;
@@ -29,6 +30,8 @@ public class AuthControlDemo implements Watcher{
         zookeeper=new ZooKeeper(CONNECTSTRING, 5000, new AuthControlDemo());
         countDownLatch.await();
 
+        //ACL （create/delete/write/read/admin）
+        //权限模式： ip/Digest(username,pwd)/world对所有用户开放/super
         ACL acl = new ACL(ZooDefs.Perms.CREATE, new Id("digest","root:root"));
         ACL acl2 = new ACL(ZooDefs.Perms.CREATE, new Id("ip","192.168.1.1"));
 
@@ -43,9 +46,6 @@ public class AuthControlDemo implements Watcher{
         ZooKeeper zooKeeper1 = new ZooKeeper(CONNECTSTRING, 5000, new AuthControlDemo());
         countDownLatch.await();
         zooKeeper1.delete("/auth1",-1);
-
-        // acl (create /delete /admin /read/write)
-        //权限模式： ip/Digest（username:password）/world/super
 
     }
     

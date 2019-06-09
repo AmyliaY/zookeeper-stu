@@ -7,16 +7,15 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.zookeeper.CreateMode;
 
 /**
- * author:水菟丸
- */
+* @author 全恒
+*/
 public class CuratorEventDemo {
 
     /**
-     * 三种watcher来做节点的监听
-     * pathcache   监视一个路径下子节点的创建、删除、节点数据更新
+     * Curator提供了三种watcher来做节点的监听
+     * PathCache   监视一个路径下子节点的创建、删除、节点数据更新
      * NodeCache   监视一个节点的创建、更新、删除
-     * TreeCache   pathcaceh+nodecache 的合体（监视路径下的创建、更新、删除事件），
-     * 缓存路径下的所有子节点的数据
+     * TreeCache   PathCache与NodeCache的合体（监视路径下的创建、更新、删除事件），缓存路径下的所有子节点的数据
      */
 
     public static void main(String[] args) throws Exception {

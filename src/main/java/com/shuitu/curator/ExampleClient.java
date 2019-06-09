@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * author:水菟丸
- */
+* @author 全恒
+*/
 public class ExampleClient extends LeaderSelectorListenerAdapter implements Closeable{
 
     private final String name;

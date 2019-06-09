@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * author：水菟丸
- * 创建会话
- */
+* @author 全恒
+* 创建会话
+*/
 public class ZookeeperClient {
 
 	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +

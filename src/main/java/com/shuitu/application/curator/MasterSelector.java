@@ -9,8 +9,8 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import java.util.concurrent.TimeUnit;
 
 /**
- * author：水菟丸
- */
+* @author 全恒
+*/
 public class MasterSelector {
 
 	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +
