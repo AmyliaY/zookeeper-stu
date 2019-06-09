@@ -12,6 +12,7 @@ import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
+import org.junit.Test;
 
 /**
 * @author 全恒
@@ -129,6 +130,23 @@ public class Practice implements Watcher{
 				}
 			}
 		}
+	}
+	
+	@Test
+	public void test() throws IOException, InterruptedException, KeeperException{
+		zooKeeper = new ZooKeeper(CONNECTSTRING, 5000, new Practice());//new Practice()相当于注册的监听器
+		countDownLatch.await();
+		System.out.println("zookeeper客户端的连接状态：" + zooKeeper.getState());
 		
+		//创建节点和子节点，然后修改子节点（临时节点下面不能挂子节点）
+		String path = "/22persistentNode";
+		zooKeeper.create(path, "321".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+		TimeUnit.SECONDS.sleep(1);//睡一秒
+		zooKeeper.create(path + "/child", "IJustAChild".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+		TimeUnit.SECONDS.sleep(1);
+		
+		//删除子节点
+		zooKeeper.delete(path + "/child", -1);
+		Thread.sleep(2000);
 	}
 }
