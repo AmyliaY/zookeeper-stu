@@ -18,10 +18,14 @@ import org.apache.zookeeper.data.Stat;
  * author:水菟丸
  */
 public class ApiOperatorDemo implements Watcher{
+	
 	private final static String CONNECTSTRING = "192.168.123.38:2181,192.168.123.55:2181," +
             "192.168.123.45:2181,192.168.123.174:2181";
+	
     private static CountDownLatch countDownLatch = new CountDownLatch(1);
+    
     private static ZooKeeper zookeeper;
+    
     private static Stat stat = new Stat();
     
     public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
