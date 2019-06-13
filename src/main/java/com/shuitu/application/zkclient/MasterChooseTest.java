@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
 * @author 全恒
-* 模拟多个客户端抢夺master权限
+* 模拟多个机器抢夺master角色
 */
 public class MasterChooseTest {
 

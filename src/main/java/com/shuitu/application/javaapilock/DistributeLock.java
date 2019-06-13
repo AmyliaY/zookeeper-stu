@@ -1,10 +1,5 @@
 package com.shuitu.application.javaapilock;
 
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.ZooDefs;
-import org.apache.zookeeper.ZooKeeper;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
@@ -12,13 +7,18 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
+
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
+import org.junit.Test;
 
 /**
 * @author 全恒
+* 用zookeeper的Java API实现分布式锁
 */
 public class DistributeLock {
-
 
     private static final String ROOT_LOCKS = "/LOCKS";//根节点
 
@@ -44,9 +44,10 @@ public class DistributeLock {
             lockID = zooKeeper.create(ROOT_LOCKS+"/", data, ZooDefs.Ids.
                     OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
 
-            System.out.println(Thread.currentThread().getName() + "->成功创建了lock节点[" + lockID + "], 开始去竞争锁");
+            System.out.println(Thread.currentThread().getName() + "->成功创建了lock节点[" + lockID + "],开始去竞争锁");
 
-            List<String> childrenNodes = zooKeeper.getChildren(ROOT_LOCKS, true);//获取根节点下的所有子节点
+            //获取根节点下的所有子节点
+            List<String> childrenNodes = zooKeeper.getChildren(ROOT_LOCKS, true);
             //排序，从小到大
             SortedSet<String> sortedSet = new TreeSet<String>();
             for(String children : childrenNodes){
@@ -58,12 +59,16 @@ public class DistributeLock {
                 System.out.println(Thread.currentThread().getName() + "->成功获得锁，lock节点为:[" + lockID + "]");
                 return true;
             }
+            //获取所有比当前lockID小的节点集合
             SortedSet<String> lessThanLockId = sortedSet.headSet(lockID);
             if(!lessThanLockId.isEmpty()){
-                String prevLockID = lessThanLockId.last();//拿到比当前LOCKID这个几点更小的上一个节点
+            	//拿到比当前lockID小的上一节点
+                String prevLockID = lessThanLockId.last();
+                //监听前一个节点是否被释放，然后设置监听的过期时间，如果监听超时则放弃获取锁，若节点被释放则立刻去获取锁
                 zooKeeper.exists(prevLockID, new LockWatcher(countDownLatch));
-                countDownLatch.await(sessionTimeout, TimeUnit.MILLISECONDS);
-                //上面这段代码意味着如果会话超时或者节点被删除（释放）了
+                boolean flag = countDownLatch.await(sessionTimeout, TimeUnit.MILLISECONDS);
+                if(!flag)
+                	return false;
                 System.out.println(Thread.currentThread().getName() + " 成功获取锁：[" + lockID + "]");
             }
             return true;
@@ -89,7 +94,6 @@ public class DistributeLock {
         return false;
     }
 
-
     public static void main(String[] args) {
         final CountDownLatch latch = new CountDownLatch(10);
         Random random = new Random();
@@ -98,6 +102,7 @@ public class DistributeLock {
                 DistributeLock lock = null;
                 try {
                     lock = new DistributeLock();
+                    //使用闭锁，当10个线程都countDown()后，释放闭锁，使10个线程同时去争夺锁
                     latch.countDown();
                     latch.await();
                     lock.lock();

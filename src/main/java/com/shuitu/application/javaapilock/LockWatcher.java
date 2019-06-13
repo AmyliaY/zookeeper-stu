@@ -17,6 +17,7 @@ public class LockWatcher implements Watcher{
     }
 
     public void process(WatchedEvent event) {
+    	//如果节点被删除，则释放 闭锁
         if(event.getType() == Event.EventType.NodeDeleted){
             latch.countDown();
         }

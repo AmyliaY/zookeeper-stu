@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 /**
 * @author 全恒
-* 模拟 争抢master节点的机器
+* 用户中心，用来模拟 争抢master节点的机器
 */
 public class UserCenter implements Serializable{
 
     private static final long serialVersionUID = -1776114173857775665L;
+    
     private int mc_id; //机器信息
 
     private String mc_name;//机器名称
