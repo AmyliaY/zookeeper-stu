@@ -20,8 +20,11 @@ public class MasterSelector {
     
     public static void main(String[] args) {
 
-        CuratorFramework curatorFramework = CuratorFrameworkFactory.builder().connectString(CONNECTSTRING).
-                retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
+        CuratorFramework curatorFramework = CuratorFrameworkFactory
+        		.builder()
+        		.connectString(CONNECTSTRING)
+        		.retryPolicy(new ExponentialBackoffRetry(1000, 3))
+        		.build();
 
         @SuppressWarnings("resource")
 		LeaderSelector leaderSelector = new LeaderSelector(curatorFramework, MASTER_PATH, new LeaderSelectorListenerAdapter() {
